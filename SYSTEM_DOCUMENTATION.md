@@ -12,9 +12,10 @@
 > - ✅ ER diagrams use simplified syntax (relationship labels removed for compatibility)
 > - ✅ All sequence diagrams, state diagrams, and graphs are compatible
 > 
-> **⚠️ Important:** The ER diagram (Entity Relationship Diagram) is complex and may occasionally fail to render on GitHub due to size/complexity. If you see "Unable to render rich display" for the ER diagram:
-> - **Use the text-based relationships** provided immediately below the diagram
-> - **Copy the diagram code** to https://mermaid.live/ for online viewing
+> **⚠️ Important:** The ER diagram has been simplified to a core version (15 key relationships) for better GitHub compatibility. The full ER diagram (42 relationships) is provided as code you can copy to https://mermaid.live/. If you see "Unable to render rich display":
+> - **The simplified ER diagram** should render correctly on GitHub
+> - **Use the text-based relationships** provided below for complete details
+> - **Copy the full diagram code** to https://mermaid.live/ for the complete view
 > - **All other diagrams** (18 total) should render correctly
 > 
 > **If you see "Unable to render rich display" on GitHub:**
@@ -212,25 +213,25 @@ A comprehensive recruitment platform that connects job seekers (candidates) with
 
 ```mermaid
 graph TB
-    subgraph "Client Layer"
+    subgraph CL[Client Layer]
         WEB[Web Browser]
-        MOBILE[Mobile App<br/>Future]
+        MOBILE[Mobile App Future]
         ADMIN[Admin Panel]
     end
     
-    subgraph "Application Layer"
-        DJANGO[Django Application<br/>Django 5.2+]
-        ASGI[ASGI Server<br/>Django Channels]
-        WSGI[WSGI Server<br/>Gunicorn]
+    subgraph AL[Application Layer]
+        DJANGO[Django Application 5.2]
+        ASGI[ASGI Server Channels]
+        WSGI[WSGI Server Gunicorn]
     end
     
-    subgraph "API Layer"
-        REST[REST API<br/>DRF]
-        WS[WebSocket<br/>Channels]
-        AUTH[Authentication<br/>JWT]
+    subgraph APIL[API Layer]
+        REST[REST API DRF]
+        WS[WebSocket Channels]
+        AUTH[Authentication JWT]
     end
     
-    subgraph "Business Logic Layer"
+    subgraph BL[Business Logic Layer]
         SERVICES[Services Layer]
         MATCHING[Matching Service]
         PAYMENT[Payment Service]
@@ -238,23 +239,23 @@ graph TB
         EMAIL[Email Service]
     end
     
-    subgraph "Data Layer"
-        DB[(PostgreSQL<br/>Production)]
-        SQLITE[(SQLite<br/>Development)]
-        CACHE[(Redis<br/>Cache)]
-        STORAGE[Cloudinary<br/>Media Storage]
+    subgraph DL[Data Layer]
+        DB[(PostgreSQL Production)]
+        SQLITE[(SQLite Development)]
+        CACHE[(Redis Cache)]
+        STORAGE[Cloudinary Storage]
     end
     
-    subgraph "External Services"
-        STRIPE[Stripe<br/>Payments]
-        AFRIBA[AfribaPay<br/>Mobile Money]
-        MAILJET[Mailjet<br/>Email]
-        LINKEDIN[LinkedIn<br/>OAuth]
-        GOOGLE[Google<br/>OAuth]
+    subgraph ES[External Services]
+        STRIPE[Stripe Payments]
+        AFRIBA[AfribaPay Mobile Money]
+        MAILJET[Mailjet Email]
+        LINKEDIN[LinkedIn OAuth]
+        GOOGLE[Google OAuth]
         ZOOM[Zoom API]
         MEET[Google Meet]
         TEAMS[Microsoft Teams]
-        ANALYTICS[Analytics<br/>GA4, Mixpanel]
+        ANALYTICS[Analytics GA4 Mixpanel]
     end
     
     WEB --> DJANGO
@@ -404,62 +405,86 @@ graph TB
 
 ### Core Entity Relationship Diagram
 
-> **⚠️ Note:** If this ER diagram doesn't render on GitHub, it may be due to the complexity. Use the text-based relationships below or view it at https://mermaid.live/
+> **⚠️ Note:** The full ER diagram is very complex (42 relationships). Below is a simplified core diagram showing the most important relationships. For the complete detailed relationships, see the text-based list below.
+
+**Simplified Core ER Diagram:**
 
 ```mermaid
 erDiagram
     User ||--o| CandidateProfile
     User ||--o| RecruiterProfile
-    User ||--o| UserSubscription
-    User ||--o| UserCredits
-    User ||--o| UsageQuota
     User ||--o{ Application
     User ||--o{ Message
     User ||--o{ Notification
-    User ||--o{ Review
-    
-    CandidateProfile ||--o{ WorkExperience
-    CandidateProfile ||--o{ Education
-    CandidateProfile ||--o{ Project
-    CandidateProfile ||--o{ CandidateDocument
-    CandidateProfile ||--o{ Interest
-    CandidateProfile ||--o{ Language
     
     Company ||--o{ Job
     Company ||--o{ RecruiterProfile
-    Company ||--o{ TeamMember
     
     Job ||--o{ Application
     Job ||--|| JobTest
     Job ||--o{ JobMatch
-    Job ||--o{ RequiredDocument
-    Job ||--o{ EvaluationCriteria
     
     Application ||--|| TestSubmission
-    Application ||--o{ ApplicationDocument
-    Application ||--o{ ApplicationEvaluation
-    Application ||--o{ ApplicationStage
-    Application ||--o{ Reference
-    Application ||--o| OnboardingChecklist
     
-    JobTest ||--o{ TestQuestion
-    TestQuestion ||--o{ TestAnswer
-    TestSubmission ||--o{ TestAnswerSubmission
-    
-    Conversation ||--o{ Message
-    User ||--o{ Conversation
+    CandidateProfile ||--o{ WorkExperience
+    CandidateProfile ||--o{ Education
     
     JobMatch }o--|| CandidateProfile
     JobMatch }o--|| Job
     
-    SubscriptionPlan ||--o{ UserSubscription
+    Conversation ||--o{ Message
+    User ||--o{ Conversation
     
-    NGO ||--o{ NGOMember
-    NGO ||--o{ Volunteer
-    NGO ||--o{ Event
-    NGO ||--o{ DonationCampaign
-    NGO ||--o{ Donation
+    SubscriptionPlan ||--o{ UserSubscription
 ```
+
+> **💡 Full ER Diagram:** For the complete ER diagram with all 42 relationships, copy the code below to https://mermaid.live/:
+> 
+> ```
+> erDiagram
+>     User ||--o| CandidateProfile
+>     User ||--o| RecruiterProfile
+>     User ||--o| UserSubscription
+>     User ||--o| UserCredits
+>     User ||--o| UsageQuota
+>     User ||--o{ Application
+>     User ||--o{ Message
+>     User ||--o{ Notification
+>     User ||--o{ Review
+>     CandidateProfile ||--o{ WorkExperience
+>     CandidateProfile ||--o{ Education
+>     CandidateProfile ||--o{ Project
+>     CandidateProfile ||--o{ CandidateDocument
+>     CandidateProfile ||--o{ Interest
+>     CandidateProfile ||--o{ Language
+>     Company ||--o{ Job
+>     Company ||--o{ RecruiterProfile
+>     Company ||--o{ TeamMember
+>     Job ||--o{ Application
+>     Job ||--|| JobTest
+>     Job ||--o{ JobMatch
+>     Job ||--o{ RequiredDocument
+>     Job ||--o{ EvaluationCriteria
+>     Application ||--|| TestSubmission
+>     Application ||--o{ ApplicationDocument
+>     Application ||--o{ ApplicationEvaluation
+>     Application ||--o{ ApplicationStage
+>     Application ||--o{ Reference
+>     Application ||--o| OnboardingChecklist
+>     JobTest ||--o{ TestQuestion
+>     TestQuestion ||--o{ TestAnswer
+>     TestSubmission ||--o{ TestAnswerSubmission
+>     Conversation ||--o{ Message
+>     User ||--o{ Conversation
+>     JobMatch }o--|| CandidateProfile
+>     JobMatch }o--|| Job
+>     SubscriptionPlan ||--o{ UserSubscription
+>     NGO ||--o{ NGOMember
+>     NGO ||--o{ Volunteer
+>     NGO ||--o{ Event
+>     NGO ||--o{ DonationCampaign
+>     NGO ||--o{ Donation
+> ```
 
 **Text-Based Entity Relationships:**
 
@@ -1018,21 +1043,21 @@ sequenceDiagram
 ```mermaid
 graph TD
     USER[User Base]
-    USER --> CANDIDATE[Candidate<br/>Job Seeker]
-    USER --> RECRUITER[Recruiter<br/>Hiring Manager]
-    USER --> NGO_MGR[NGO Manager<br/>Organization Admin]
-    USER --> ADMIN[Admin<br/>Site Administrator]
+    USER --> CANDIDATE[Candidate Job Seeker]
+    USER --> RECRUITER[Recruiter Hiring Manager]
+    USER --> NGO_MGR[NGO Manager Organization Admin]
+    USER --> ADMIN[Admin Site Administrator]
     
     CANDIDATE --> CAND_FREE[Free Account]
-    CANDIDATE --> CAND_PREMIUM[Premium Account<br/>via Credits]
+    CANDIDATE --> CAND_PREMIUM[Premium Account via Credits]
     
-    RECRUITER --> REC_FREE[Free Plan<br/>Limited]
-    RECRUITER --> REC_STARTER[Starter Plan<br/>€29.99/mo]
-    RECRUITER --> REC_PRO[Pro Plan<br/>€79.99/mo]
-    RECRUITER --> REC_ENTERPRISE[Enterprise Plan<br/>€199.99/mo]
+    RECRUITER --> REC_FREE[Free Plan Limited]
+    RECRUITER --> REC_STARTER[Starter Plan 29.99 EUR/mo]
+    RECRUITER --> REC_PRO[Pro Plan 79.99 EUR/mo]
+    RECRUITER --> REC_ENTERPRISE[Enterprise Plan 199.99 EUR/mo]
     
-    ADMIN --> SUPERADMIN[Superadmin<br/>Full Access]
-    ADMIN --> STAFF[Staff<br/>Limited Admin]
+    ADMIN --> SUPERADMIN[Superadmin Full Access]
+    ADMIN --> STAFF[Staff Limited Admin]
 ```
 
 **Text-Based User Type Hierarchy:**
@@ -1911,10 +1936,10 @@ RESULT: Continuous authentication with token refresh
 ```mermaid
 graph TD
     PLAN[Subscription Plan]
-    PLAN --> FREE[Free Plan<br/>1 job/month<br/>10 CV views]
-    PLAN --> STARTER[Starter Plan<br/>€29.99/month<br/>5 jobs/month<br/>50 CV views]
-    PLAN --> PRO[Pro Plan<br/>€79.99/month<br/>Unlimited jobs<br/>Unlimited CVs]
-    PLAN --> ENTERPRISE[Enterprise Plan<br/>€199.99/month<br/>Everything + Team]
+    PLAN --> FREE[Free Plan 1 job/month 10 CV views]
+    PLAN --> STARTER[Starter Plan 29.99 EUR/month 5 jobs/month 50 CV views]
+    PLAN --> PRO[Pro Plan 79.99 EUR/month Unlimited jobs Unlimited CVs]
+    PLAN --> ENTERPRISE[Enterprise Plan 199.99 EUR/month Everything Team]
     
     USER[User] --> SUB[UserSubscription]
     SUB --> PLAN
