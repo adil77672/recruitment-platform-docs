@@ -12,17 +12,23 @@
 > - ✅ ER diagrams use simplified syntax (relationship labels removed for compatibility)
 > - ✅ All sequence diagrams, state diagrams, and graphs are compatible
 > 
+> **⚠️ Important:** The ER diagram (Entity Relationship Diagram) is complex and may occasionally fail to render on GitHub due to size/complexity. If you see "Unable to render rich display" for the ER diagram:
+> - **Use the text-based relationships** provided immediately below the diagram
+> - **Copy the diagram code** to https://mermaid.live/ for online viewing
+> - **All other diagrams** (18 total) should render correctly
+> 
 > **If you see "Unable to render rich display" on GitHub:**
 > 1. **Refresh the page** - GitHub sometimes needs a refresh to render all diagrams
 > 2. **Wait a few seconds** - Large files with many diagrams may take time to render
-> 3. **Check browser console** - Look for JavaScript errors that might prevent rendering
-> 4. **Try a different browser** - Some browsers handle Mermaid rendering better
+> 3. **Check browser console** - Look for JavaScript errors (F12 → Console tab)
+> 4. **Try a different browser** - Chrome/Firefox usually work best
 > 5. **Use text alternatives** - Each diagram section includes text-based descriptions below
 > 
 > **Alternative Viewing Options:**
 > - **VS Code**: Install "Markdown Preview Mermaid Support" extension
 > - **Online Editor**: Copy diagram code to https://mermaid.live/ to view
 > - **GitHub Desktop**: Diagrams should render in the preview pane
+> - **GitHub Web**: Most diagrams work, ER diagram may need online viewer
 
 ---
 
@@ -397,6 +403,8 @@ graph TB
 ## 📊 Data Models & Relationships
 
 ### Core Entity Relationship Diagram
+
+> **⚠️ Note:** If this ER diagram doesn't render on GitHub, it may be due to the complexity. Use the text-based relationships below or view it at https://mermaid.live/
 
 ```mermaid
 erDiagram
