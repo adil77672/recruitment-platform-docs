@@ -214,48 +214,48 @@ A comprehensive recruitment platform that connects job seekers (candidates) with
 ```mermaid
 graph TB
     subgraph CL["Client Layer"]
-        WEB[Web Browser]
-        MOBILE[Mobile App Future]
-        ADMIN[Admin Panel]
+        WEB["Web Browser"]
+        MOBILE["Mobile App (Future)"]
+        ADMIN["Admin Panel"]
     end
     
     subgraph AL["Application Layer"]
-        DJANGO[Django Application 5.2]
-        ASGI[ASGI Server Channels]
-        WSGI[WSGI Server Gunicorn]
+        DJANGO["Django Application (5.2)"]
+        ASGI["ASGI Server (Channels)"]
+        WSGI["WSGI Server (Gunicorn)"]
     end
     
     subgraph APIL["API Layer"]
-        REST[REST API DRF]
-        WS[WebSocket Channels]
-        AUTH[Authentication JWT]
+        REST["REST API (DRF)"]
+        WS["WebSocket (Channels)"]
+        AUTH["Authentication (JWT)"]
     end
     
     subgraph BL["Business Logic Layer"]
-        SERVICES[Services Layer]
-        MATCHING[Matching Service]
-        PAYMENT[Payment Service]
-        NOTIF[Notification Service]
-        EMAIL[Email Service]
+        SERVICES["Services Layer"]
+        MATCHING["Matching Service"]
+        PAYMENT["Payment Service"]
+        NOTIF["Notification Service"]
+        EMAIL["Email Service"]
     end
     
     subgraph DL["Data Layer"]
-        DB[(PostgreSQL Production)]
-        SQLITE[(SQLite Development)]
-        CACHE[(Redis Cache)]
-        STORAGE[Cloudinary Storage]
+        DB[("PostgreSQL (Production)")]
+        SQLITE[("SQLite (Development)")]
+        CACHE[("Redis Cache")]
+        STORAGE["Cloudinary Storage"]
     end
     
     subgraph ES["External Services"]
-        STRIPE[Stripe Payments]
-        AFRIBA[AfribaPay Mobile Money]
-        MAILJET[Mailjet Email]
-        LINKEDIN[LinkedIn OAuth]
-        GOOGLE[Google OAuth]
-        ZOOM[Zoom API]
-        MEET[Google Meet]
-        TEAMS[Microsoft Teams]
-        ANALYTICS[Analytics GA4 Mixpanel]
+        STRIPE["Stripe Payments"]
+        AFRIBA["AfribaPay Mobile Money"]
+        MAILJET["Mailjet Email"]
+        LINKEDIN["LinkedIn OAuth"]
+        GOOGLE["Google OAuth"]
+        ZOOM["Zoom API"]
+        MEET["Google Meet"]
+        TEAMS["Microsoft Teams"]
+        ANALYTICS["Analytics (GA4/Mixpanel)"]
     end
     
     WEB --> DJANGO
@@ -411,31 +411,31 @@ graph TB
 
 ```mermaid
 erDiagram
-    User ||--o| CandidateProfile
-    User ||--o| RecruiterProfile
-    User ||--o{ Application
-    User ||--o{ Message
-    User ||--o{ Notification
+    User ||--o| CandidateProfile : has
+    User ||--o| RecruiterProfile : has
+    User ||--o{ Application : submits
+    User ||--o{ Message : sends
+    User ||--o{ Notification : receives
     
-    Company ||--o{ Job
-    Company ||--o{ RecruiterProfile
+    Company ||--o{ Job : posts
+    Company ||--o{ RecruiterProfile : employs
     
-    Job ||--o{ Application
-    Job ||--|| JobTest
-    Job ||--o{ JobMatch
+    Job ||--o{ Application : receives
+    Job ||--|| JobTest : has
+    Job ||--o{ JobMatch : matches
     
-    Application ||--|| TestSubmission
+    Application ||--|| TestSubmission : contains
     
-    CandidateProfile ||--o{ WorkExperience
-    CandidateProfile ||--o{ Education
+    CandidateProfile ||--o{ WorkExperience : has
+    CandidateProfile ||--o{ Education : has
     
-    JobMatch }o--|| CandidateProfile
-    JobMatch }o--|| Job
+    CandidateProfile ||--o{ JobMatch : matches
+    Job ||--o{ JobMatch : matches
     
-    Conversation ||--o{ Message
-    User ||--o{ Conversation
+    Conversation ||--o{ Message : contains
+    User ||--o{ Conversation : participates
     
-    SubscriptionPlan ||--o{ UserSubscription
+    SubscriptionPlan ||--o{ UserSubscription : has
 ```
 
 > **💡 Full ER Diagram:** For the complete ER diagram with all 42 relationships, copy the code below to https://mermaid.live/:
