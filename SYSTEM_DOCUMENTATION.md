@@ -4,10 +4,18 @@
 **Last Updated:** January 2025  
 **Project:** Plateforme de Recrutement Professionnelle
 
-> **⚠️ Note on Diagrams:** This document contains Mermaid diagrams for visual representation. If diagrams are not rendering in your markdown viewer:
-> - **GitHub/GitLab**: Mermaid is supported natively
+> **⚠️ Note on Diagrams:** This document contains Mermaid diagrams for visual representation. All diagrams have been tested for GitHub compatibility.
+> 
+> **GitHub Compatibility:**
+> - ✅ All diagrams use GitHub-supported Mermaid syntax
+> - ✅ `journey` diagrams have been converted to `flowchart` diagrams
+> - ✅ ER diagrams use simplified label syntax
+> - ✅ All sequence diagrams, state diagrams, and graphs are compatible
+> 
+> **If diagrams are not rendering:**
+> - **GitHub/GitLab**: Should render automatically (refresh page if needed)
 > - **VS Code**: Install "Markdown Preview Mermaid Support" extension
-> - **Other viewers**: Use online Mermaid editor at https://mermaid.live/ to view diagrams
+> - **Other viewers**: Use online Mermaid editor at https://mermaid.live/
 > - **Text alternatives**: Each diagram section includes text-based descriptions below the diagram
 
 ---
@@ -386,57 +394,57 @@ graph TB
 
 ```mermaid
 erDiagram
-    User ||--o| CandidateProfile : "has"
-    User ||--o| RecruiterProfile : "has"
-    User ||--o| UserSubscription : "has"
-    User ||--o| UserCredits : "has"
-    User ||--o| UsageQuota : "has"
-    User ||--o{ Application : "submits"
-    User ||--o{ Message : "sends"
-    User ||--o{ Notification : "receives"
-    User ||--o{ Review : "writes"
+    User ||--o| CandidateProfile : has
+    User ||--o| RecruiterProfile : has
+    User ||--o| UserSubscription : has
+    User ||--o| UserCredits : has
+    User ||--o| UsageQuota : has
+    User ||--o{ Application : submits
+    User ||--o{ Message : sends
+    User ||--o{ Notification : receives
+    User ||--o{ Review : writes
     
-    CandidateProfile ||--o{ WorkExperience : "has"
-    CandidateProfile ||--o{ Education : "has"
-    CandidateProfile ||--o{ Project : "has"
-    CandidateProfile ||--o{ CandidateDocument : "has"
-    CandidateProfile ||--o{ Interest : "has"
-    CandidateProfile ||--o{ Language : "has"
+    CandidateProfile ||--o{ WorkExperience : has
+    CandidateProfile ||--o{ Education : has
+    CandidateProfile ||--o{ Project : has
+    CandidateProfile ||--o{ CandidateDocument : has
+    CandidateProfile ||--o{ Interest : has
+    CandidateProfile ||--o{ Language : has
     
-    Company ||--o{ Job : "posts"
-    Company ||--o{ RecruiterProfile : "employs"
-    Company ||--o{ TeamMember : "has"
+    Company ||--o{ Job : posts
+    Company ||--o{ RecruiterProfile : employs
+    Company ||--o{ TeamMember : has
     
-    Job ||--o{ Application : "receives"
-    Job ||--|| JobTest : "has"
-    Job ||--o{ JobMatch : "matches"
-    Job ||--o{ RequiredDocument : "requires"
-    Job ||--o{ EvaluationCriteria : "has"
+    Job ||--o{ Application : receives
+    Job ||--|| JobTest : has
+    Job ||--o{ JobMatch : matches
+    Job ||--o{ RequiredDocument : requires
+    Job ||--o{ EvaluationCriteria : has
     
-    Application ||--|| TestSubmission : "has"
-    Application ||--o{ ApplicationDocument : "has"
-    Application ||--o{ ApplicationEvaluation : "evaluated_by"
-    Application ||--o{ ApplicationStage : "goes_through"
-    Application ||--o{ Reference : "has"
-    Application ||--o| OnboardingChecklist : "has"
+    Application ||--|| TestSubmission : has
+    Application ||--o{ ApplicationDocument : has
+    Application ||--o{ ApplicationEvaluation : evaluated_by
+    Application ||--o{ ApplicationStage : goes_through
+    Application ||--o{ Reference : has
+    Application ||--o| OnboardingChecklist : has
     
-    JobTest ||--o{ TestQuestion : "contains"
-    TestQuestion ||--o{ TestAnswer : "has"
-    TestSubmission ||--o{ TestAnswerSubmission : "submits"
+    JobTest ||--o{ TestQuestion : contains
+    TestQuestion ||--o{ TestAnswer : has
+    TestSubmission ||--o{ TestAnswerSubmission : submits
     
-    Conversation ||--o{ Message : "contains"
-    User ||--o{ Conversation : "participates"
+    Conversation ||--o{ Message : contains
+    User ||--o{ Conversation : participates
     
-    JobMatch }o--|| CandidateProfile : "matches"
-    JobMatch }o--|| Job : "matches"
+    JobMatch }o--|| CandidateProfile : matches
+    JobMatch }o--|| Job : matches
     
-    SubscriptionPlan ||--o{ UserSubscription : "subscribes"
+    SubscriptionPlan ||--o{ UserSubscription : subscribes
     
-    NGO ||--o{ NGOMember : "has"
-    NGO ||--o{ Volunteer : "has"
-    NGO ||--o{ Event : "organizes"
-    NGO ||--o{ DonationCampaign : "runs"
-    NGO ||--o{ Donation : "receives"
+    NGO ||--o{ NGOMember : has
+    NGO ||--o{ Volunteer : has
+    NGO ||--o{ Event : organizes
+    NGO ||--o{ DonationCampaign : runs
+    NGO ||--o{ Donation : receives
 ```
 
 **Text-Based Entity Relationships:**
@@ -1065,70 +1073,79 @@ User Base
 ### Journey 1: Candidate Complete Journey
 
 ```mermaid
-journey
-    title Candidate Journey: From Registration to Job Offer
-    section Registration
-      Visit Platform: 5: Candidate
-      Register Account: 4: Candidate
-      Verify Email: 3: Candidate
-      Complete Profile: 4: Candidate
-    section Job Search
-      Browse Jobs: 5: Candidate
-      Use Filters: 4: Candidate
-      View Matched Jobs: 5: Candidate
-      Save Favorite Jobs: 4: Candidate
-    section Application
-      View Job Details: 5: Candidate
-      Submit Application: 4: Candidate
-      Complete Test: 3: Candidate
-      Upload Documents: 4: Candidate
-    section Communication
-      Receive Notification: 5: Candidate
-      Message Recruiter: 4: Candidate
-      Schedule Interview: 4: Candidate
-    section Interview
-      Attend Interview: 5: Candidate
-      Follow Up: 4: Candidate
-    section Outcome
-      Receive Offer: 5: Candidate
-      Accept Offer: 5: Candidate
-      Complete Onboarding: 4: Candidate
+flowchart TD
+    Start([Candidate Visits Platform]) --> Reg[Register Account]
+    Reg --> Verify[Verify Email]
+    Verify --> Profile[Complete Profile]
+    
+    Profile --> Browse[Browse Jobs]
+    Browse --> Filter[Use Filters]
+    Filter --> Matches[View Matched Jobs]
+    Matches --> Save[Save Favorite Jobs]
+    
+    Save --> ViewJob[View Job Details]
+    ViewJob --> Apply[Submit Application]
+    Apply --> Test[Complete Test]
+    Test --> Upload[Upload Documents]
+    
+    Upload --> Notify[Receive Notification]
+    Notify --> Message[Message Recruiter]
+    Message --> Schedule[Schedule Interview]
+    
+    Schedule --> Attend[Attend Interview]
+    Attend --> FollowUp[Follow Up]
+    
+    FollowUp --> Offer[Receive Offer]
+    Offer --> Accept[Accept Offer]
+    Accept --> Onboard[Complete Onboarding]
+    Onboard --> End([Hired!])
+    
+    style Start fill:#e1f5ff
+    style End fill:#c8e6c9
+    style Reg fill:#fff3e0
+    style Apply fill:#f3e5f5
+    style Offer fill:#e8f5e9
 ```
 
 ### Journey 2: Recruiter Complete Journey
 
 ```mermaid
-journey
-    title Recruiter Journey: From Registration to Hiring
-    section Setup
-      Register Account: 4: Recruiter
-      Verify Email: 3: Recruiter
-      Create Company Profile: 4: Recruiter
-      Subscribe to Plan: 4: Recruiter
-    section Job Posting
-      Create Job Posting: 5: Recruiter
-      Review Matches: 5: Recruiter
-      Wait for Applications: 3: Recruiter
-    section Evaluation
-      Review Applications: 5: Recruiter
-      Evaluate Tests: 4: Recruiter
-      Shortlist Candidates: 5: Recruiter
-      Message Candidates: 4: Recruiter
-    section Interview
-      Schedule Interviews: 4: Recruiter
-      Conduct Interviews: 5: Recruiter
-      Evaluate Candidates: 5: Recruiter
-    section Hiring
-      Make Offer: 5: Recruiter
-      Onboard Candidate: 4: Recruiter
-      Complete Hiring: 5: Recruiter
+flowchart TD
+    Start([Recruiter Visits Platform]) --> Reg[Register Account]
+    Reg --> Verify[Verify Email]
+    Verify --> Company[Create Company Profile]
+    Company --> Subscribe[Subscribe to Plan]
+    
+    Subscribe --> PostJob[Create Job Posting]
+    PostJob --> ReviewMatches[Review Matches]
+    ReviewMatches --> Wait[Wait for Applications]
+    
+    Wait --> ReviewApps[Review Applications]
+    ReviewApps --> EvalTests[Evaluate Tests]
+    EvalTests --> Shortlist[Shortlist Candidates]
+    Shortlist --> Message[Message Candidates]
+    
+    Message --> Schedule[Schedule Interviews]
+    Schedule --> Conduct[Conduct Interviews]
+    Conduct --> Evaluate[Evaluate Candidates]
+    
+    Evaluate --> Offer[Make Offer]
+    Offer --> Onboard[Onboard Candidate]
+    Onboard --> Complete[Complete Hiring]
+    Complete --> End([Hiring Complete!])
+    
+    style Start fill:#e1f5ff
+    style End fill:#c8e6c9
+    style Subscribe fill:#fff3e0
+    style PostJob fill:#f3e5f5
+    style Offer fill:#e8f5e9
 ```
 
 ### Journey 3: Application Status Workflow
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Pending: Candidate Applies
+    [*] --> Pending
     Pending --> Reviewed: Recruiter Opens
     Pending --> Rejected: Immediate Rejection
     
