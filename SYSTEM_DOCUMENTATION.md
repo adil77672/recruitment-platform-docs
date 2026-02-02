@@ -213,25 +213,25 @@ A comprehensive recruitment platform that connects job seekers (candidates) with
 
 ```mermaid
 graph TB
-    subgraph CL[Client Layer]
+    subgraph CL["Client Layer"]
         WEB[Web Browser]
         MOBILE[Mobile App Future]
         ADMIN[Admin Panel]
     end
     
-    subgraph AL[Application Layer]
+    subgraph AL["Application Layer"]
         DJANGO[Django Application 5.2]
         ASGI[ASGI Server Channels]
         WSGI[WSGI Server Gunicorn]
     end
     
-    subgraph APIL[API Layer]
+    subgraph APIL["API Layer"]
         REST[REST API DRF]
         WS[WebSocket Channels]
         AUTH[Authentication JWT]
     end
     
-    subgraph BL[Business Logic Layer]
+    subgraph BL["Business Logic Layer"]
         SERVICES[Services Layer]
         MATCHING[Matching Service]
         PAYMENT[Payment Service]
@@ -239,14 +239,14 @@ graph TB
         EMAIL[Email Service]
     end
     
-    subgraph DL[Data Layer]
+    subgraph DL["Data Layer"]
         DB[(PostgreSQL Production)]
         SQLITE[(SQLite Development)]
         CACHE[(Redis Cache)]
         STORAGE[Cloudinary Storage]
     end
     
-    subgraph ES[External Services]
+    subgraph ES["External Services"]
         STRIPE[Stripe Payments]
         AFRIBA[AfribaPay Mobile Money]
         MAILJET[Mailjet Email]
@@ -632,12 +632,12 @@ sequenceDiagram
     F->>API: POST /users/check_email/
     API->>DB: Check Email Exists
     DB-->>API: Email Available
-    API-->>F: {available: true}
+    API-->>F: available true
     
     F->>API: POST /users/check_username/
     API->>DB: Check Username Exists
     DB-->>API: Username Available
-    API-->>F: {available: true}
+    API-->>F: available true
     
     U->>F: Submit Registration
     F->>API: POST /users/ (registration data)
@@ -650,17 +650,17 @@ sequenceDiagram
     DB-->>S: Profile Created
     S->>E: Send Activation Email
     E->>U: Email with Activation Link
-    API-->>F: {user data, message}
-    F->>U: Show Success + Email Verification Page
+    API-->>F: user data message
+    F->>U: Show Success Email Verification Page
     
     U->>E: Click Activation Link
     E->>F: Redirect with Token
     F->>API: POST /users/email-verification/confirm/
     API->>DB: Validate Token
-    API->>DB: Activate User (is_active=True)
+    API->>DB: Activate User is_active True
     DB-->>API: User Activated
-    API-->>F: {success message}
-    F->>U: Show "Account Activated" + Login Button
+    API-->>F: success message
+    F->>U: Show Account Activated Login Button
 ```
 
 **Text-Based Registration Flow:**
@@ -750,8 +750,8 @@ sequenceDiagram
     M-->>API: Matching Complete
     API->>N: Notify Matching Candidates
     N->>DB: Create Notifications
-    API-->>F: {job data, match_count}
-    F->>R: Show Success + Match Count
+    API-->>F: job data match_count
+    F->>R: Show Success Match Count
 ```
 
 **Text-Based Job Posting & Matching Flow:**
@@ -829,21 +829,21 @@ sequenceDiagram
     participant R as Recruiter
     
     C->>F: View Job Details
-    F->>API: GET /jobs/{id}/
+    F->>API: GET /jobs/id/
     API->>DB: Get Job Data
     DB-->>API: Job Data
     API-->>F: Job Details
-    F->>C: Show Job + Apply Button
+    F->>C: Show Job Apply Button
     
     C->>F: Click Apply
     F->>API: GET /applications/check-quota/
     API->>DB: Check Usage Quota
     DB-->>API: Quota Status
-    API-->>F: {can_apply: true/false}
+    API-->>F: can_apply true or false
     
     alt Quota Available
         C->>F: Fill Application Form
-        F->>API: POST /applications/ (application data)
+        F->>API: POST /applications/ application data
         API->>API: Validate Data
         API->>DB: Check Already Applied
         DB-->>API: Not Applied
@@ -851,15 +851,15 @@ sequenceDiagram
         API->>DB: Create Application
         DB-->>API: Application Created
         
-        API->>M: Update JobMatch (has_applied=True)
+        API->>M: Update JobMatch has_applied True
         API->>N: Notify Recruiter
         N->>DB: Create Notification
-        N->>R: Send Email/Push Notification
+        N->>R: Send Email Push Notification
         
-        API-->>F: {application data, success}
-        F->>C: Show Success + Application Status
+        API-->>F: application data success
+        F->>C: Show Success Application Status
     else Quota Exceeded
-        F->>C: Show "Upgrade Required" Message
+        F->>C: Show Upgrade Required Message
     end
 ```
 
@@ -876,35 +876,35 @@ sequenceDiagram
     participant C as Candidate
     
     R->>F: View Applications
-    F->>API: GET /applications/job/{job_id}/
-    API->>DB: Get Applications + Match Scores
+    F->>API: GET /applications/job/job_id/
+    API->>DB: Get Applications Match Scores
     DB-->>API: Applications List
-    API-->>F: Applications (sorted by match score)
+    API-->>F: Applications sorted by match score
     F->>R: Show Applications List
     
     R->>F: Click Application
-    F->>API: GET /applications/{id}/
+    F->>API: GET /applications/id/
     API->>DB: Get Application Details
-    DB-->>API: Application + Test Submission
+    DB-->>API: Application Test Submission
     API-->>F: Full Application Data
     F->>R: Show Application Details
     
     R->>F: Review Test Submission
-    F->>API: POST /applications/{id}/evaluate-test/
+    F->>API: POST /applications/id/evaluate-test/
     API->>T: Evaluate Open-Ended Questions
     T->>DB: Update TestSubmission Score
     API->>DB: Update Application Status
     DB-->>API: Updated
     
     R->>F: Update Application Status
-    F->>API: PATCH /applications/{id}/status/
-    API->>DB: Update Status (e.g., shortlisted)
+    F->>API: PATCH /applications/id/status/
+    API->>DB: Update Status shortlisted
     DB-->>API: Updated
     
     API->>N: Notify Candidate
     N->>DB: Create Notification
     N->>C: Send Email/Push Notification
-    API-->>F: {updated application}
+    API-->>F: updated application
     F->>R: Show Updated Status
 ```
 
@@ -1010,12 +1010,12 @@ sequenceDiagram
     API-->>F: Available Plans
     F->>U: Show Plans
     
-    U->>F: Choose Plan + Payment Method
+    U->>F: Choose Plan Payment Method
     F->>API: POST /payments/initiate/
     API->>DB: Create Transaction
     API->>S: Create Payment Session
     S-->>API: Payment URL
-    API-->>F: {payment_url, transaction_id}
+    API-->>F: payment_url transaction_id
     F->>S: Redirect to Payment Gateway
     
     U->>S: Complete Payment
