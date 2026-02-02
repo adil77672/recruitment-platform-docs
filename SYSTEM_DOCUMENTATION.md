@@ -4,6 +4,12 @@
 **Last Updated:** January 2025  
 **Project:** Plateforme de Recrutement Professionnelle
 
+> **⚠️ Note on Diagrams:** This document contains Mermaid diagrams for visual representation. If diagrams are not rendering in your markdown viewer:
+> - **GitHub/GitLab**: Mermaid is supported natively
+> - **VS Code**: Install "Markdown Preview Mermaid Support" extension
+> - **Other viewers**: Use online Mermaid editor at https://mermaid.live/ to view diagrams
+> - **Text alternatives**: Each diagram section includes text-based descriptions below the diagram
+
 ---
 
 ## 📑 Table of Contents
@@ -28,6 +34,41 @@
 18. [Matching Algorithm](#matching-algorithm)
 19. [Integration Points](#integration-points)
 20. [Deployment & Infrastructure](#deployment--infrastructure)
+21. [Mermaid Diagram Troubleshooting](#mermaid-diagram-troubleshooting)
+22. [Quick Reference: All System Flows](#quick-reference-all-system-flows)
+23. [Cross-Reference Guide](#cross-reference-guide)
+24. [System Debugging Guide](#system-debugging-guide)
+
+---
+
+## 🚀 Quick Start Guide
+
+### For Different Roles
+
+**👨‍💻 Frontend Developer:**
+1. Read: [Frontend Developer Guide](#frontend-developer-guide) (Section 8)
+2. Review: [API Architecture](#api-architecture) (Section 13)
+3. Study: [Complete Data Flow Charts](#complete-data-flow-charts) (Section 4)
+4. Reference: [API_FLOWS_GUIDE.md](./API_FLOWS_GUIDE.md) for detailed endpoints
+
+**🎨 Designer:**
+1. Read: [Designer Guide](#designer-guide) (Section 9)
+2. Review: [User Journeys & Workflows](#user-journeys--workflows) (Section 6)
+3. Study: [DESIGNER_FLOWS_GUIDE.md](./DESIGNER_FLOWS_GUIDE.md) for UI flows
+
+**👨‍💻 Backend Developer:**
+1. Read: [Backend Developer Guide](#backend-developer-guide) (Section 10)
+2. Review: [Technical Architecture](#technical-architecture) (Section 7)
+3. Study: [Data Models & Relationships](#data-models--relationships) (Section 3)
+
+**🏗️ Architect:**
+1. Read: [System Architecture](#system-architecture) (Section 2)
+2. Review: [Module Relationships & Dependencies](#module-relationships--dependencies) (Section 12)
+3. Study: [Integration Points](#integration-points) (Section 19)
+
+**👤 End User:**
+1. Read: [User Guide](#user-guide) (Section 11)
+2. Review: [Project Overview & Scope](#project-overview--scope) (Section 1)
 
 ---
 
@@ -228,6 +269,84 @@ graph TB
     SERVICES --> ANALYTICS
 ```
 
+**Text-Based Architecture Overview:**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    CLIENT LAYER                              │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │ Web Browser  │  │ Mobile App   │  │ Admin Panel  │      │
+│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘      │
+└─────────┼──────────────────┼──────────────────┼─────────────┘
+          │                  │                  │
+          └──────────────────┼──────────────────┘
+                             │
+┌────────────────────────────┼─────────────────────────────┐
+│                    APPLICATION LAYER                       │
+│                             │                              │
+│          ┌───────────────────┴───────────────────┐        │
+│          │      Django Application (5.2+)        │        │
+│          └───────────┬───────────────┬───────────┘        │
+│                      │               │                     │
+│          ┌───────────┴───┐   ┌────────┴────────┐            │
+│          │ ASGI Server  │   │ WSGI Server    │            │
+│          │ (Channels)   │   │ (Gunicorn)     │            │
+│          └──────┬───────┘   └────────┬────────┘            │
+└─────────────────┼───────────────────┼─────────────────────┘
+                   │                   │
+┌──────────────────┼───────────────────┼─────────────────────┐
+│                    API LAYER                                  │
+│          ┌────────┴────────┐   ┌──────────────┐              │
+│          │ REST API (DRF) │   │ WebSocket    │              │
+│          │                │   │ (Channels)   │              │
+│          │ Authentication │   │              │              │
+│          │ (JWT)          │   │              │              │
+│          └────────┬────────┘   └──────┬───────┘              │
+└──────────────────┼────────────────────┼──────────────────────┘
+                   │                    │
+┌───────────────────┼────────────────────┼──────────────────────┐
+│              BUSINESS LOGIC LAYER                              │
+│          ┌───────┴────────┐                                    │
+│          │ Services Layer│                                    │
+│          └───────┬────────┘                                    │
+│                  │                                             │
+│    ┌─────────────┼─────────────┐                              │
+│    │             │             │                              │
+│ ┌──┴──┐    ┌────┴────┐   ┌────┴────┐                         │
+│ │Match│    │ Payment │   │ Notif   │                         │
+│ │ing  │    │ Service │   │ Service │                         │
+│ └──┬──┘    └────┬────┘   └────┬────┘                         │
+│    │            │             │                              │
+└────┼────────────┼─────────────┼──────────────────────────────┘
+     │            │             │
+┌────┼────────────┼─────────────┼──────────────────────────────┐
+│              DATA LAYER                                        │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐      │
+│  │PostgreSQL│  │  SQLite  │  │  Redis   │  │Cloudinary│      │
+│  │(Prod)    │  │  (Dev)   │  │ (Cache)  │  │(Storage) │      │
+│  └──────────┘  └──────────┘  └──────────┘  └──────────┘      │
+└───────────────────────────────────────────────────────────────┘
+     │            │             │
+┌────┼────────────┼─────────────┼──────────────────────────────┐
+│          EXTERNAL SERVICES                                    │
+│  ┌──────┐  ┌──────┐  ┌──────┐  ┌──────┐  ┌──────┐         │
+│  │Stripe│  │Afriba│  │Mailjet│  │Linked│  │Google│         │
+│  └──────┘  └──────┘  └──────┘  └──────┘  └──────┘         │
+│  ┌──────┐  ┌──────┐  ┌──────┐  ┌──────┐                   │
+│  │ Zoom │  │ Meet │  │Teams │  │Analyt│                   │
+│  └──────┘  └──────┘  └──────┘  └──────┘                   │
+└──────────────────────────────────────────────────────────────┘
+```
+
+**Layer Descriptions:**
+
+1. **Client Layer**: User interfaces (web, mobile, admin)
+2. **Application Layer**: Django application with ASGI (WebSockets) and WSGI (HTTP)
+3. **API Layer**: REST API and WebSocket connections
+4. **Business Logic Layer**: Core services (matching, payments, notifications, email)
+5. **Data Layer**: Databases (PostgreSQL/SQLite), cache (Redis), storage (Cloudinary)
+6. **External Services**: Third-party integrations (payments, email, OAuth, video, analytics)
+
 ### Technology Stack
 
 **Backend:**
@@ -319,6 +438,77 @@ erDiagram
     NGO ||--o{ DonationCampaign : "runs"
     NGO ||--o{ Donation : "receives"
 ```
+
+**Text-Based Entity Relationships:**
+
+**Core Relationships:**
+
+1. **User (1) → (1) CandidateProfile** - One user has one candidate profile
+2. **User (1) → (1) RecruiterProfile** - One user has one recruiter profile
+3. **User (1) → (1) UserSubscription** - One user has one subscription
+4. **User (1) → (1) UserCredits** - One user has one credit account
+5. **User (1) → (1) UsageQuota** - One user has one usage quota
+6. **User (1) → (N) Application** - One user can submit many applications
+7. **User (1) → (N) Message** - One user can send many messages
+8. **User (1) → (N) Notification** - One user can receive many notifications
+9. **User (1) → (N) Review** - One user can write many reviews
+
+**Candidate Profile Relationships:**
+
+10. **CandidateProfile (1) → (N) WorkExperience** - One profile has many work experiences
+11. **CandidateProfile (1) → (N) Education** - One profile has many education entries
+12. **CandidateProfile (1) → (N) Project** - One profile has many projects
+13. **CandidateProfile (1) → (N) CandidateDocument** - One profile has many documents
+14. **CandidateProfile (1) → (N) Interest** - One profile has many interests
+15. **CandidateProfile (1) → (N) Language** - One profile has many languages
+
+**Company & Job Relationships:**
+
+16. **Company (1) → (N) Job** - One company posts many jobs
+17. **Company (1) → (N) RecruiterProfile** - One company employs many recruiters
+18. **Company (1) → (N) TeamMember** - One company has many team members
+19. **Job (1) → (N) Application** - One job receives many applications
+20. **Job (1) → (1) JobTest** - One job has one test
+21. **Job (1) → (N) JobMatch** - One job matches many candidates
+22. **Job (1) → (N) RequiredDocument** - One job requires many documents
+23. **Job (1) → (N) EvaluationCriteria** - One job has many evaluation criteria
+
+**Application Relationships:**
+
+24. **Application (1) → (1) TestSubmission** - One application has one test submission
+25. **Application (1) → (N) ApplicationDocument** - One application has many documents
+26. **Application (1) → (N) ApplicationEvaluation** - One application has many evaluations
+27. **Application (1) → (N) ApplicationStage** - One application goes through many stages
+28. **Application (1) → (N) Reference** - One application has many references
+29. **Application (1) → (1) OnboardingChecklist** - One application has one onboarding checklist
+
+**Test Relationships:**
+
+30. **JobTest (1) → (N) TestQuestion** - One test contains many questions
+31. **TestQuestion (1) → (N) TestAnswer** - One question has many possible answers
+32. **TestSubmission (1) → (N) TestAnswerSubmission** - One submission has many answer submissions
+
+**Communication Relationships:**
+
+33. **Conversation (1) → (N) Message** - One conversation contains many messages
+34. **User (1) → (N) Conversation** - One user participates in many conversations
+
+**Matching Relationships:**
+
+35. **JobMatch (N) → (1) CandidateProfile** - Many matches belong to one candidate
+36. **JobMatch (N) → (1) Job** - Many matches belong to one job
+
+**Subscription Relationships:**
+
+37. **SubscriptionPlan (1) → (N) UserSubscription** - One plan has many subscriptions
+
+**NGO Relationships:**
+
+38. **NGO (1) → (N) NGOMember** - One NGO has many members
+39. **NGO (1) → (N) Volunteer** - One NGO has many volunteers
+40. **NGO (1) → (N) Event** - One NGO organizes many events
+41. **NGO (1) → (N) DonationCampaign** - One NGO runs many campaigns
+42. **NGO (1) → (N) Donation** - One NGO receives many donations
 
 ### Model Relationships Explained
 
@@ -426,6 +616,63 @@ sequenceDiagram
     F->>U: Show "Account Activated" + Login Button
 ```
 
+**Text-Based Registration Flow:**
+
+```
+STEP 1: Pre-Validation (Optional, for better UX)
+─────────────────────────────────────────────────
+User → Frontend: Types email
+Frontend → API: POST /users/check_email/ {email}
+API → Database: Check if email exists
+Database → API: Email available
+API → Frontend: {available: true}
+Frontend → User: Show "Email available" ✓
+
+User → Frontend: Types username
+Frontend → API: POST /users/check_username/ {username}
+API → Database: Check if username exists
+Database → API: Username available
+API → Frontend: {available: true}
+Frontend → User: Show "Username available" ✓
+
+STEP 2: Registration
+─────────────────────────────────────────────────
+User → Frontend: Submits registration form
+Frontend → API: POST /users/ {
+  username, email, password, password2,
+  first_name, last_name, user_type
+}
+API → API: Validate all data
+API → Database: Create User (is_active=False)
+Database → API: User created with ID
+
+API → Signals: Trigger post_save signal
+Signals → Database: Create Profile
+  - If candidate → Create CandidateProfile
+  - If recruiter → Create Company + RecruiterProfile
+Database → Signals: Profile created
+
+Signals → Email Service: Send activation email
+Email Service → User: Email with activation link
+
+API → Frontend: {user data, message: "Check email"}
+Frontend → User: Show success + email verification page
+
+STEP 3: Email Verification
+─────────────────────────────────────────────────
+User → Email: Clicks activation link
+Email → Frontend: Redirects with token parameter
+Frontend → API: POST /users/email-verification/confirm/ {token}
+API → Database: Validate token (check expiration, signature)
+Database → API: Token valid
+API → Database: Activate user (is_active=True)
+Database → API: User activated
+API → Frontend: {message: "Email verified"}
+Frontend → User: Show "Account Activated" + Login button
+
+RESULT: User can now login
+```
+
 ### Flow 2: Job Posting & Matching
 
 ```mermaid
@@ -458,6 +705,68 @@ sequenceDiagram
     N->>DB: Create Notifications
     API-->>F: {job data, match_count}
     F->>R: Show Success + Match Count
+```
+
+**Text-Based Job Posting & Matching Flow:**
+
+```
+STEP 1: Job Creation
+─────────────────────────────────────────────────
+Recruiter → Frontend: Fills job posting form
+Frontend → API: POST /jobs/ {
+  title, description, requirements,
+  location, salary_min, salary_max, etc.
+}
+API → API: Validate job data
+API → API: Check subscription quota
+  - Get recruiter's subscription
+  - Check if within job posting limit
+  - If exceeded → Return 402 Payment Required
+
+API → Database: Create Job record
+Database → API: Job created with ID
+
+STEP 2: Automatic Matching (Background Process)
+─────────────────────────────────────────────────
+API → Matching Service: Trigger matching calculation
+Matching Service → Database: Get all active candidates
+Database → Matching Service: Return candidate list (e.g., 100 candidates)
+
+LOOP: For each candidate (100 iterations)
+  Matching Service → Matching Service: Calculate match score
+    - Skills match: 35%
+    - Experience match: 20%
+    - Location match: 10%
+    - Salary match: 8%
+    - etc.
+  Matching Service → Database: Create/Update JobMatch record
+    - Store match_score, skills_match, experience_match, etc.
+    - Set is_active=True
+END LOOP
+
+Matching Service → API: Matching complete (100 matches created)
+
+STEP 3: Notify Candidates
+─────────────────────────────────────────────────
+API → Notification Service: Notify matching candidates
+Notification Service → Database: Create notifications for candidates
+  - Filter: candidates with match_score > threshold (e.g., 70%)
+  - Create: "New job match found" notification
+Database → Notification Service: Notifications created
+
+Notification Service → Email Service: Send email notifications
+Email Service → Candidates: "New job matches your profile"
+
+STEP 4: Response
+─────────────────────────────────────────────────
+API → Frontend: {
+  job: {id, title, ...},
+  match_count: 100,
+  message: "Job posted successfully"
+}
+Frontend → Recruiter: Show success + "100 candidates matched"
+
+RESULT: Job posted, matches calculated, candidates notified
 ```
 
 ### Flow 3: Application Submission
@@ -586,6 +895,56 @@ sequenceDiagram
     F1->>C: Show New Message
 ```
 
+**Text-Based Real-Time Messaging Flow:**
+
+```
+STEP 1: WebSocket Connection
+─────────────────────────────────────────────────
+Candidate → Frontend 1: Opens conversation page
+Frontend 1 → WebSocket Server: Connect ws://domain/ws/messaging/{conversation_id}/?token={jwt}
+WebSocket Server → Database: Verify user has access to conversation
+Database → WebSocket Server: Access granted
+WebSocket Server → WebSocket Server: Add user to conversation group
+WebSocket Server → Frontend 1: Connection established
+WebSocket Server → Frontend 1: Send recent message history
+
+STEP 2: Send Message (Candidate)
+─────────────────────────────────────────────────
+Candidate → Frontend 1: Types and sends message
+Frontend 1 → WebSocket Server: {
+  type: "chat_message",
+  content: "Hello, I'm interested in this position"
+}
+WebSocket Server → Database: Save message
+  - Create Message record
+  - Set sender = candidate
+  - Set conversation = conversation_id
+  - Set created_at = now
+Database → WebSocket Server: Message saved with ID
+
+WebSocket Server → WebSocket Server: Broadcast to conversation group
+WebSocket Server → Frontend 1: Message confirmed (echo)
+WebSocket Server → Frontend 2: New message (real-time)
+Frontend 2 → Recruiter: Show notification + display message
+
+STEP 3: Reply (Recruiter)
+─────────────────────────────────────────────────
+Recruiter → Frontend 2: Types and sends reply
+Frontend 2 → WebSocket Server: {
+  type: "chat_message",
+  content: "Thank you for your interest..."
+}
+WebSocket Server → Database: Save message
+Database → WebSocket Server: Message saved
+
+WebSocket Server → WebSocket Server: Broadcast to conversation group
+WebSocket Server → Frontend 2: Message confirmed (echo)
+WebSocket Server → Frontend 1: New message (real-time)
+Frontend 1 → Candidate: Display new message instantly
+
+RESULT: Real-time bidirectional communication
+```
+
 ### Flow 6: Payment & Subscription
 
 ```mermaid
@@ -652,6 +1011,37 @@ graph TD
     
     ADMIN --> SUPERADMIN[Superadmin<br/>Full Access]
     ADMIN --> STAFF[Staff<br/>Limited Admin]
+```
+
+**Text-Based User Type Hierarchy:**
+
+```
+User Base
+│
+├── Candidate (Job Seeker)
+│   ├── Free Account
+│   │   └── Limited features, basic access
+│   └── Premium Account (via Credits)
+│       └── Enhanced features, unlimited access
+│
+├── Recruiter (Hiring Manager)
+│   ├── Free Plan (Limited)
+│   │   └── 1 job/month, 10 CV views/month
+│   ├── Starter Plan (€29.99/month)
+│   │   └── 5 jobs/month, 50 CV views/month
+│   ├── Pro Plan (€79.99/month)
+│   │   └── Unlimited jobs, unlimited CV views
+│   └── Enterprise Plan (€199.99/month)
+│       └── Everything + team management
+│
+├── NGO Manager (Organization Admin)
+│   └── Full NGO management access
+│
+└── Admin (Site Administrator)
+    ├── Superadmin
+    │   └── Full system access, all permissions
+    └── Staff
+        └── Limited admin access
 ```
 
 ### Role Permissions Matrix
@@ -1333,6 +1723,77 @@ sequenceDiagram
     API-->>C: Jobs List
 ```
 
+**Text-Based Authentication Flow:**
+
+```
+STEP 1: Initial Login
+─────────────────────────────────────────────────
+Client → API: POST /auth/token/ {
+  username: "user@example.com",
+  password: "SecurePass123"
+}
+API → Database: Validate credentials
+  - Find user by username/email
+  - Check password hash
+  - Verify user is active
+Database → API: User found and valid
+API → API: Generate JWT tokens
+  - Access token (expires in 60 minutes)
+  - Refresh token (expires in 7 days)
+API → Client: {
+  access: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  refresh: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+Client → Client: Store tokens in localStorage
+
+STEP 2: Using Access Token
+─────────────────────────────────────────────────
+Client → API: GET /users/me/
+  Headers: Authorization: Bearer {access_token}
+API → API: Verify JWT token
+  - Check signature
+  - Check expiration
+  - Extract user ID
+API → Database: Get user data by ID
+Database → API: User data
+API → Client: {user information}
+
+STEP 3: Token Expiration
+─────────────────────────────────────────────────
+[60 minutes later - token expired]
+
+Client → API: GET /jobs/
+  Headers: Authorization: Bearer {expired_token}
+API → API: Verify token → Expired
+API → Client: 401 Unauthorized
+
+STEP 4: Token Refresh
+─────────────────────────────────────────────────
+Client → API: POST /auth/token/refresh/ {
+  refresh: "{refresh_token}"
+}
+API → API: Validate refresh token
+  - Check signature
+  - Check expiration (7 days)
+  - Check if blacklisted
+API → API: Generate new access token
+API → Client: {
+  access: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." (new)
+}
+Client → Client: Update stored access token
+
+STEP 5: Retry with New Token
+─────────────────────────────────────────────────
+Client → API: GET /jobs/
+  Headers: Authorization: Bearer {new_access_token}
+API → API: Verify token → Valid
+API → Database: Get jobs list
+Database → API: Jobs data
+API → Client: {jobs list}
+
+RESULT: Continuous authentication with token refresh
+```
+
 ---
 
 ## 🗄️ Database Schema
@@ -1428,6 +1889,37 @@ graph TD
     SUB --> PLAN
     SUB --> QUOTA[UsageQuota]
     QUOTA --> TRACK[Track Usage]
+```
+
+**Text-Based Subscription Structure:**
+
+```
+Subscription Plan Hierarchy:
+│
+├── Free Plan
+│   ├── 1 job posting per month
+│   ├── 10 CV views per month
+│   └── Basic features
+│
+├── Starter Plan (€29.99/month)
+│   ├── 5 job postings per month
+│   ├── 50 CV views per month
+│   └── Standard features
+│
+├── Pro Plan (€79.99/month)
+│   ├── Unlimited job postings
+│   ├── Unlimited CV views
+│   └── Advanced features
+│
+└── Enterprise Plan (€199.99/month)
+    ├── Everything in Pro
+    ├── Team management
+    ├── Priority support
+    └── Custom features
+
+User → UserSubscription → SubscriptionPlan
+         │
+         └── UsageQuota → Tracks monthly usage
 ```
 
 ### Payment Flow Details
@@ -1626,8 +2118,641 @@ graph TB
     HIRE --> ONBOARD
 ```
 
+**Text-Based Complete Flow:**
+
+```
+START: User Visits Platform
+  │
+  ├─→ Register Account
+  │     │
+  │     ├─→ Verify Email
+  │     │     │
+  │     │     └─→ Complete Profile
+  │     │           │
+  │     │           └─→ User Type Decision
+  │     │                 │
+  │     │                 ├─→ CANDIDATE PATH
+  │     │                 │     │
+  │     │                 │     ├─→ Candidate Dashboard
+  │     │                 │     │     │
+  │     │                 │     │     ├─→ Browse Jobs
+  │     │                 │     │     │     │
+  │     │                 │     │     │     └─→ View Matches
+  │     │                 │     │     │           │
+  │     │                 │     │     │           └─→ Apply for Job
+  │     │                 │     │     │                 │
+  │     │                 │     │     │                 └─→ Track Application
+  │     │                 │     │     │                       │
+  │     │                 │     │     │                       └─→ Message Recruiter
+  │     │                 │     │     │                             │
+  │     │                 │     │     │                             └─→ Interview
+  │     │                 │     │     │                                   │
+  │     │                 │     │     │                                   └─→ Receive Offer
+  │     │                 │     │     │                                         │
+  │     │                 │     │     │                                         └─→ Onboarding
+  │     │                 │     │     │
+  │     │                 │     │     └─→ END: Hired & Onboarded
+  │     │                 │     │
+  │     │                 │     └─→ RECRUITER PATH
+  │     │                 │           │
+  │     │                 │           ├─→ Recruiter Dashboard
+  │     │                 │           │     │
+  │     │                 │           │     ├─→ Subscribe to Plan
+  │     │                 │           │     │     │
+  │     │                 │           │     │     └─→ Post Job
+  │     │                 │           │     │           │
+  │     │                 │           │     │           └─→ Automatic Matching
+  │     │                 │           │     │                 │
+  │     │                 │           │     │                 └─→ Review Applications
+  │     │                 │           │     │                       │
+  │     │                 │           │     │                       └─→ Evaluate Candidates
+  │     │                 │           │     │                             │
+  │     │                 │           │     │                             └─→ Shortlist
+  │     │                 │           │     │                                   │
+  │     │                 │           │     │                                   └─→ Schedule Interview
+  │     │                 │           │     │                                         │
+  │     │                 │           │     │                                         └─→ Hiring Decision
+  │     │                 │           │     │                                               │
+  │     │                 │           │     │                                               └─→ Hire Candidate
+  │     │                 │           │     │                                                     │
+  │     │                 │           │     │                                                     └─→ Onboarding
+  │     │                 │           │     │
+  │     │                 │           │     └─→ END: Candidate Hired & Onboarded
+```
+
+**Key Decision Points:**
+
+1. **User Type Selection**: Determines which path user takes (candidate vs recruiter)
+2. **Subscription Decision**: Recruiters must choose a plan to post jobs
+3. **Application Status**: Multiple decision points in application workflow
+4. **Hiring Decision**: Final decision point before onboarding
+
+---
+
+## 🔧 Mermaid Diagram Troubleshooting
+
+### If Diagrams Are Not Showing
+
+**Common Issues & Solutions:**
+
+1. **GitHub/GitLab**: Mermaid is supported natively - diagrams should render automatically
+2. **VS Code**: Install "Markdown Preview Mermaid Support" extension
+3. **Other Markdown Viewers**: 
+   - Use online Mermaid editor: https://mermaid.live/
+   - Copy diagram code and paste into editor
+   - View rendered diagram
+
+4. **Browser Extensions**:
+   - Chrome: "Markdown Viewer" with Mermaid support
+   - Firefox: "Markdown Viewer" extension
+
+5. **Alternative**: Each diagram section includes text-based alternatives below the Mermaid code
+
+### Viewing Diagrams Online
+
+1. Go to https://mermaid.live/
+2. Copy the Mermaid code from any diagram (between ```mermaid and ```)
+3. Paste into the editor
+4. View the rendered diagram
+
+### Text-Based Alternatives
+
+All major diagrams in this document have text-based alternatives provided below the Mermaid code. These use ASCII art and structured text to represent the same information.
+
+---
+
+## 📋 Quick Reference: All System Flows
+
+### Complete Flow Summary
+
+**1. User Registration Flow:**
+```
+Check Email → Check Username → Register → Verify Email → Complete Profile → Dashboard
+```
+
+**2. Job Posting Flow:**
+```
+Subscribe → Post Job → Auto-Matching → Notify Candidates → Review Applications
+```
+
+**3. Application Flow:**
+```
+Browse Jobs → View Match → Apply → Submit Test → Track Status → Interview → Offer
+```
+
+**4. Matching Flow:**
+```
+Job Created → Calculate Matches (All Candidates) → Store Scores → Notify Candidates
+```
+
+**5. Messaging Flow:**
+```
+Application Created → Conversation Created → WebSocket Connect → Send/Receive Messages
+```
+
+**6. Payment Flow:**
+```
+Select Plan → Initiate Payment → Redirect to Gateway → Complete Payment → Webhook → Activate Subscription
+```
+
+**7. Notification Flow:**
+```
+Event Occurs → Create Notification → Send via Channels (Email/Push/In-App/WebSocket) → User Receives
+```
+
+---
+
+## 🔗 Cross-Reference Guide
+
+### For Frontend Developers
+
+**Start Here:**
+1. Read: [Frontend Developer Guide](#frontend-developer-guide)
+2. Review: [API Architecture](#api-architecture)
+3. Check: [API_FLOWS_GUIDE.md](./API_FLOWS_GUIDE.md) for detailed endpoint documentation
+4. Study: [Complete Data Flow Charts](#complete-data-flow-charts) for request/response flows
+
+**Key Sections:**
+- API Integration Pattern
+- WebSocket Connection Pattern
+- State Management Pattern
+- Authentication Flow
+
+### For Designers
+
+**Start Here:**
+1. Read: [Designer Guide](#designer-guide)
+2. Review: [User Journeys & Workflows](#user-journeys--workflows)
+3. Check: [DESIGNER_FLOWS_GUIDE.md](./DESIGNER_FLOWS_GUIDE.md) for detailed UI flows
+4. Study: [User Types & Roles](#user-types--roles) for user personas
+
+**Key Sections:**
+- Design System
+- User Interface Patterns
+- User Journey Diagrams
+- Visual Flow Mockups
+
+### For Backend Developers
+
+**Start Here:**
+1. Read: [Backend Developer Guide](#backend-developer-guide)
+2. Review: [Technical Architecture](#technical-architecture)
+3. Check: [Data Models & Relationships](#data-models--relationships)
+4. Study: [Module Relationships & Dependencies](#module-relationships--dependencies)
+
+**Key Sections:**
+- Service Layer Pattern
+- Signal Usage
+- Database Schema
+- API Architecture
+
+### For Architects
+
+**Start Here:**
+1. Read: [System Architecture](#system-architecture)
+2. Review: [Technical Architecture](#technical-architecture)
+3. Check: [Integration Points](#integration-points)
+4. Study: [Deployment & Infrastructure](#deployment--infrastructure)
+
+**Key Sections:**
+- High-Level Architecture
+- Request Flow Architecture
+- Module Dependencies
+- External Service Integrations
+
+### For Users
+
+**Start Here:**
+1. Read: [User Guide](#user-guide)
+2. Review: [User Journeys & Workflows](#user-journeys--workflows)
+3. Check: [Project Overview & Scope](#project-overview--scope)
+
+**Key Sections:**
+- For Candidates
+- For Recruiters
+- Getting Started Guides
+
+---
+
+## 📊 Data Flow Summary Tables
+
+### Request Flow Summary
+
+| Step | Component | Action | Next Step |
+|------|-----------|--------|-----------|
+| 1 | Client | Sends HTTP Request | URL Router |
+| 2 | URL Router | Routes to View | Middleware |
+| 3 | Middleware | Authenticates | Permission Check |
+| 4 | Permission Check | Validates Access | View/ViewSet |
+| 5 | View/ViewSet | Processes Request | Serializer |
+| 6 | Serializer | Validates Data | Service Layer |
+| 7 | Service Layer | Business Logic | Database/External API |
+| 8 | Database | Stores/Retrieves Data | Response |
+| 9 | Response | Returns JSON | Client |
+
+### Application Status Transitions
+
+| From Status | To Status | Trigger | Who Can Do |
+|-------------|-----------|---------|------------|
+| pending | reviewed | Recruiter opens | Recruiter |
+| pending | rejected | Immediate rejection | Recruiter |
+| reviewed | shortlisted | Good match | Recruiter |
+| reviewed | rejected | Not suitable | Recruiter |
+| shortlisted | interview | Schedule interview | Recruiter |
+| shortlisted | rejected | Change mind | Recruiter |
+| interview | accepted | Offer made | Recruiter |
+| interview | rejected | Not selected | Recruiter |
+| interview | interview | Additional round | Recruiter |
+| accepted | onboarding | Candidate accepts | System |
+| accepted | rejected | Candidate declines | Candidate |
+| Any | rejected | Can always reject | Recruiter |
+
+### Matching Score Components
+
+| Component | Weight | Max Points | Calculation |
+|-----------|--------|------------|-------------|
+| Skills Match | 35% | 35 | (matching_skills / required_skills) × 35 |
+| Experience Match | 20% | 20 | (candidate_years / required_years) × 20 |
+| Technologies Match | 10% | 10 | (matching_tech / required_tech) × 10 |
+| Description Match | 10% | 10 | Keyword matching algorithm |
+| Location Match | 10% | 10 | Geographic proximity calculation |
+| Salary Match | 8% | 8 | Salary range alignment |
+| Domain Match | 5% | 5 | Industry experience match |
+| Contract Type Match | 2% | 2 | Contract preference match |
+| **Total** | **100%** | **100** | Sum of all components |
+
+---
+
+## 🗺️ Complete System Map
+
+### Module Interaction Map
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    SYSTEM MODULE MAP                             │
+└─────────────────────────────────────────────────────────────────┘
+
+accounts (User Management)
+  │
+  ├─→ Creates: CandidateProfile, RecruiterProfile
+  ├─→ Used by: ALL modules (central entity)
+  ├─→ Triggers: Profile creation signals
+  └─→ Provides: Authentication, authorization
+
+jobs (Job Postings)
+  │
+  ├─→ Depends on: accounts, companies
+  ├─→ Creates: Job, JobTest, RequiredDocument
+  ├─→ Triggers: Matching calculation
+  └─→ Used by: applications, matching
+
+applications (Applications)
+  │
+  ├─→ Depends on: accounts, jobs
+  ├─→ Creates: Application, TestSubmission
+  ├─→ Triggers: Notifications, messaging
+  └─→ Used by: matching, notifications
+
+matching (Matching Algorithm)
+  │
+  ├─→ Depends on: accounts, jobs
+  ├─→ Creates: JobMatch
+  ├─→ Calculates: Match scores
+  └─→ Used by: jobs, applications
+
+messaging (Real-time Communication)
+  │
+  ├─→ Depends on: accounts
+  ├─→ Creates: Conversation, Message
+  ├─→ Uses: WebSockets (Django Channels)
+  └─→ Triggers: Notifications
+
+notifications (Notification System)
+  │
+  ├─→ Depends on: accounts
+  ├─→ Creates: Notification
+  ├─→ Delivers: Email, Push, In-App, WebSocket
+  └─→ Triggered by: All modules
+
+payments (Payment Processing)
+  │
+  ├─→ Depends on: accounts
+  ├─→ Creates: Transaction
+  ├─→ Integrates: Stripe, AfribaPay
+  └─→ Used by: subscriptions
+
+subscriptions (Subscription Management)
+  │
+  ├─→ Depends on: accounts, payments
+  ├─→ Creates: UserSubscription, UsageQuota
+  ├─→ Tracks: Usage limits
+  └─→ Enforces: Quotas on jobs, CV views
+
+companies (Company Management)
+  │
+  ├─→ Depends on: accounts
+  ├─→ Creates: Company, TeamMember
+  └─→ Used by: jobs, accounts
+
+ngo (NGO Module)
+  │
+  ├─→ Depends on: accounts, payments
+  ├─→ Creates: NGO, Member, Event, Donation
+  └─→ Standalone: Separate from recruitment flow
+
+gamification (Engagement System)
+  │
+  ├─→ Depends on: accounts
+  ├─→ Creates: Badge, Achievement, XP Transaction
+  └─→ Tracks: User engagement
+
+blog (Content Management)
+  │
+  ├─→ Standalone: Content publishing
+  └─→ Creates: Post, Category, Comment
+
+reviews (Rating System)
+  │
+  ├─→ Depends on: accounts, companies
+  ├─→ Creates: Review
+  └─→ Links: Users, Companies
+```
+
+### Data Flow Direction
+
+**Write Operations (Who Creates What):**
+
+- **User** creates → CandidateProfile, RecruiterProfile, Application, Message, Review
+- **Recruiter** creates → Job, Company (auto), ApplicationEvaluation
+- **System** creates → JobMatch (automatic), Notification (automatic), UsageQuota (automatic)
+- **Payment Gateway** creates → Transaction (via webhook)
+
+**Read Operations (Who Views What):**
+
+- **Candidate** views → Jobs, Matches, Own Applications, Messages
+- **Recruiter** views → Applications (own jobs), Matches (own jobs), Messages
+- **Admin** views → Everything (all users, all jobs, all applications)
+
+**Update Operations (Who Can Modify What):**
+
+- **User** updates → Own Profile, Own Settings
+- **Recruiter** updates → Own Jobs, Own Applications (status), Own Company
+- **Admin** updates → Everything
+
+**Delete Operations (Who Can Remove What):**
+
+- **User** deletes → Own Account (soft delete)
+- **Recruiter** deletes → Own Jobs, Own Applications
+- **Admin** deletes → Everything (hard delete)
+
+---
+
+## 🔄 Complete System Lifecycle
+
+### System Startup Sequence
+
+```
+1. Django Application Starts
+   │
+   ├─→ Load Settings
+   ├─→ Initialize Database Connection
+   ├─→ Load Middleware
+   ├─→ Load URL Patterns
+   └─→ Start ASGI Server (WebSockets)
+       │
+       └─→ Start WSGI Server (HTTP)
+
+2. External Services Connect
+   │
+   ├─→ Database: PostgreSQL/SQLite
+   ├─→ Cache: Redis
+   ├─→ Storage: Cloudinary
+   └─→ Email: Mailjet
+
+3. Background Services Start
+   │
+   ├─→ Celery Workers (if enabled)
+   ├─→ Scheduled Tasks
+   └─→ WebSocket Channels
+
+4. System Ready
+   │
+   └─→ Accept Requests
+```
+
+### Request Processing Lifecycle
+
+```
+HTTP Request Arrives
+  │
+  ├─→ Security Middleware (CSRF, XSS)
+  ├─→ Authentication Middleware (JWT)
+  ├─→ Permission Check
+  ├─→ URL Routing
+  ├─→ View Processing
+  ├─→ Serializer Validation
+  ├─→ Service Layer Logic
+  ├─→ Database Operations
+  ├─→ External API Calls (if needed)
+  ├─→ Response Serialization
+  └─→ HTTP Response Sent
+```
+
+### Background Task Lifecycle
+
+```
+Scheduled Task Triggered
+  │
+  ├─→ Task Queue (Celery)
+  ├─→ Worker Picks Up Task
+  ├─→ Execute Business Logic
+  ├─→ Update Database
+  ├─→ Send Notifications (if needed)
+  └─→ Task Complete
+```
+
+---
+
+## 📐 System Boundaries & Constraints
+
+### System Boundaries
+
+**What's Inside:**
+- User management and authentication
+- Job posting and management
+- Application processing
+- Matching algorithm
+- Real-time messaging
+- Payment processing
+- Subscription management
+- Notification delivery
+- NGO module
+- Gamification system
+
+**What's Outside (External Services):**
+- Payment gateways (Stripe, AfribaPay)
+- Email service (Mailjet)
+- Storage service (Cloudinary)
+- Video conferencing (Zoom, Meet, Teams)
+- Analytics (GA4, Mixpanel)
+- OAuth providers (LinkedIn, Google)
+
+### System Constraints
+
+**Technical Constraints:**
+- Database: PostgreSQL (production), SQLite (development)
+- File Storage: Cloudinary (images, documents)
+- Real-time: WebSocket connections limited by server capacity
+- API Rate Limits: Per-endpoint rate limiting
+
+**Business Constraints:**
+- Subscription quotas: Enforced per plan
+- Credit system: Limited by user engagement
+- Matching calculation: Runs asynchronously for large datasets
+
+**Security Constraints:**
+- JWT tokens expire after 60 minutes
+- Refresh tokens expire after 7 days
+- Password requirements: Django validators
+- File upload limits: Size and type restrictions
+
+---
+
+## 🎓 Learning Path for New Developers
+
+### Week 1: Understanding the System
+
+**Day 1-2: Project Overview**
+- Read: Project Overview & Scope
+- Review: System Architecture
+- Study: Technology Stack
+
+**Day 3-4: Data Models**
+- Read: Data Models & Relationships
+- Review: Database Schema
+- Study: Model relationships
+
+**Day 5: User Flows**
+- Read: User Journeys & Workflows
+- Review: Complete Data Flow Charts
+- Study: Application status workflow
+
+### Week 2: Development Setup
+
+**Day 1-2: Environment Setup**
+- Install dependencies
+- Configure database
+- Set up development environment
+
+**Day 3-4: Code Exploration**
+- Explore: accounts app
+- Explore: jobs app
+- Explore: applications app
+
+**Day 5: API Testing**
+- Test: Authentication endpoints
+- Test: User registration
+- Test: Job creation
+
+### Week 3: Feature Development
+
+**Day 1-2: Understanding Services**
+- Study: Service layer patterns
+- Review: Matching algorithm
+- Understand: Notification system
+
+**Day 3-4: Frontend Integration**
+- Study: API integration patterns
+- Review: WebSocket connections
+- Understand: State management
+
+**Day 5: Testing**
+- Write: Unit tests
+- Write: Integration tests
+- Test: Complete flows
+
+---
+
+## 📝 Glossary of Terms
+
+**Application**: A candidate's submission for a job position
+
+**Candidate**: A user seeking employment (user_type = 'candidate')
+
+**Company**: An organization that posts jobs and hires candidates
+
+**Job**: A job posting created by a recruiter
+
+**JobMatch**: The calculated compatibility score between a job and a candidate
+
+**Recruiter**: A user who posts jobs and hires candidates (user_type = 'recruiter')
+
+**Subscription**: A paid plan that determines user quotas and features
+
+**Usage Quota**: Monthly limits on actions (job postings, CV views, applications)
+
+**WebSocket**: Real-time bidirectional communication protocol
+
+**JWT**: JSON Web Token - authentication token format
+
+**Matching Score**: Numerical score (0-100) indicating job-candidate compatibility
+
+**Profile**: Extended user information (CandidateProfile or RecruiterProfile)
+
+**Test Submission**: Candidate's answers to a job's test questions
+
+**Conversation**: A messaging thread between users
+
+**Notification**: An alert sent to users about important events
+
+**Quota**: Usage limits based on subscription plan
+
+**Credits**: Virtual currency earned by candidates for engagement
+
+**XP Points**: Experience points earned through platform activities
+
+**Badge**: Achievement earned for completing specific actions
+
+**Achievement**: Milestone reached in the gamification system
+
+---
+
+## 🔍 System Debugging Guide
+
+### Common Issues & Solutions
+
+**Issue: Diagrams not rendering**
+- **Solution**: Use online Mermaid editor or check markdown viewer support
+- **Alternative**: Use text-based alternatives provided in document
+
+**Issue: API authentication failing**
+- **Check**: Token expiration (60 minutes)
+- **Solution**: Refresh token using `/auth/token/refresh/`
+- **Verify**: Token format in Authorization header
+
+**Issue: WebSocket connection failing**
+- **Check**: ASGI server running
+- **Verify**: Token in WebSocket URL
+- **Solution**: Check CORS settings and WebSocket routing
+
+**Issue: Matching not calculating**
+- **Check**: Matching service triggered
+- **Verify**: Candidates have complete profiles
+- **Solution**: Manually trigger recalculation
+
+**Issue: Notifications not sending**
+- **Check**: Email service configuration (Mailjet)
+- **Verify**: User notification preferences
+- **Solution**: Check notification service logs
+
 ---
 
 **Last Updated:** January 2025  
 **Version:** 1.0.0  
 **Maintained By:** Development Team
+
+**Related Documents:**
+- [API_FLOWS_GUIDE.md](./API_FLOWS_GUIDE.md) - Detailed API endpoint documentation
+- [DESIGNER_FLOWS_GUIDE.md](./DESIGNER_FLOWS_GUIDE.md) - UI/UX flow documentation
+- [FONCTIONNALITES.md](./FONCTIONNALITES.md) - Complete features list
+- [README.md](./README.md) - Project overview and setup
