@@ -4,19 +4,25 @@
 **Last Updated:** January 2025  
 **Project:** Plateforme de Recrutement Professionnelle
 
-> **⚠️ Note on Diagrams:** This document contains Mermaid diagrams for visual representation. All diagrams have been tested for GitHub compatibility.
+> **⚠️ Note on Diagrams:** This document contains Mermaid diagrams for visual representation. All diagrams have been optimized for GitHub compatibility.
 > 
 > **GitHub Compatibility:**
 > - ✅ All diagrams use GitHub-supported Mermaid syntax
 > - ✅ `journey` diagrams have been converted to `flowchart` diagrams
-> - ✅ ER diagrams use simplified label syntax
+> - ✅ ER diagrams use simplified syntax (relationship labels removed for compatibility)
 > - ✅ All sequence diagrams, state diagrams, and graphs are compatible
 > 
-> **If diagrams are not rendering:**
-> - **GitHub/GitLab**: Should render automatically (refresh page if needed)
+> **If you see "Unable to render rich display" on GitHub:**
+> 1. **Refresh the page** - GitHub sometimes needs a refresh to render all diagrams
+> 2. **Wait a few seconds** - Large files with many diagrams may take time to render
+> 3. **Check browser console** - Look for JavaScript errors that might prevent rendering
+> 4. **Try a different browser** - Some browsers handle Mermaid rendering better
+> 5. **Use text alternatives** - Each diagram section includes text-based descriptions below
+> 
+> **Alternative Viewing Options:**
 > - **VS Code**: Install "Markdown Preview Mermaid Support" extension
-> - **Other viewers**: Use online Mermaid editor at https://mermaid.live/
-> - **Text alternatives**: Each diagram section includes text-based descriptions below the diagram
+> - **Online Editor**: Copy diagram code to https://mermaid.live/ to view
+> - **GitHub Desktop**: Diagrams should render in the preview pane
 
 ---
 
@@ -394,57 +400,57 @@ graph TB
 
 ```mermaid
 erDiagram
-    User ||--o| CandidateProfile : has
-    User ||--o| RecruiterProfile : has
-    User ||--o| UserSubscription : has
-    User ||--o| UserCredits : has
-    User ||--o| UsageQuota : has
-    User ||--o{ Application : submits
-    User ||--o{ Message : sends
-    User ||--o{ Notification : receives
-    User ||--o{ Review : writes
+    User ||--o| CandidateProfile
+    User ||--o| RecruiterProfile
+    User ||--o| UserSubscription
+    User ||--o| UserCredits
+    User ||--o| UsageQuota
+    User ||--o{ Application
+    User ||--o{ Message
+    User ||--o{ Notification
+    User ||--o{ Review
     
-    CandidateProfile ||--o{ WorkExperience : has
-    CandidateProfile ||--o{ Education : has
-    CandidateProfile ||--o{ Project : has
-    CandidateProfile ||--o{ CandidateDocument : has
-    CandidateProfile ||--o{ Interest : has
-    CandidateProfile ||--o{ Language : has
+    CandidateProfile ||--o{ WorkExperience
+    CandidateProfile ||--o{ Education
+    CandidateProfile ||--o{ Project
+    CandidateProfile ||--o{ CandidateDocument
+    CandidateProfile ||--o{ Interest
+    CandidateProfile ||--o{ Language
     
-    Company ||--o{ Job : posts
-    Company ||--o{ RecruiterProfile : employs
-    Company ||--o{ TeamMember : has
+    Company ||--o{ Job
+    Company ||--o{ RecruiterProfile
+    Company ||--o{ TeamMember
     
-    Job ||--o{ Application : receives
-    Job ||--|| JobTest : has
-    Job ||--o{ JobMatch : matches
-    Job ||--o{ RequiredDocument : requires
-    Job ||--o{ EvaluationCriteria : has
+    Job ||--o{ Application
+    Job ||--|| JobTest
+    Job ||--o{ JobMatch
+    Job ||--o{ RequiredDocument
+    Job ||--o{ EvaluationCriteria
     
-    Application ||--|| TestSubmission : has
-    Application ||--o{ ApplicationDocument : has
-    Application ||--o{ ApplicationEvaluation : evaluated_by
-    Application ||--o{ ApplicationStage : goes_through
-    Application ||--o{ Reference : has
-    Application ||--o| OnboardingChecklist : has
+    Application ||--|| TestSubmission
+    Application ||--o{ ApplicationDocument
+    Application ||--o{ ApplicationEvaluation
+    Application ||--o{ ApplicationStage
+    Application ||--o{ Reference
+    Application ||--o| OnboardingChecklist
     
-    JobTest ||--o{ TestQuestion : contains
-    TestQuestion ||--o{ TestAnswer : has
-    TestSubmission ||--o{ TestAnswerSubmission : submits
+    JobTest ||--o{ TestQuestion
+    TestQuestion ||--o{ TestAnswer
+    TestSubmission ||--o{ TestAnswerSubmission
     
-    Conversation ||--o{ Message : contains
-    User ||--o{ Conversation : participates
+    Conversation ||--o{ Message
+    User ||--o{ Conversation
     
-    JobMatch }o--|| CandidateProfile : matches
-    JobMatch }o--|| Job : matches
+    JobMatch }o--|| CandidateProfile
+    JobMatch }o--|| Job
     
-    SubscriptionPlan ||--o{ UserSubscription : subscribes
+    SubscriptionPlan ||--o{ UserSubscription
     
-    NGO ||--o{ NGOMember : has
-    NGO ||--o{ Volunteer : has
-    NGO ||--o{ Event : organizes
-    NGO ||--o{ DonationCampaign : runs
-    NGO ||--o{ Donation : receives
+    NGO ||--o{ NGOMember
+    NGO ||--o{ Volunteer
+    NGO ||--o{ Event
+    NGO ||--o{ DonationCampaign
+    NGO ||--o{ Donation
 ```
 
 **Text-Based Entity Relationships:**
