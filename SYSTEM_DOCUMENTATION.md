@@ -920,7 +920,7 @@ sequenceDiagram
     participant R as Recruiter
     
     C->>F1: Open Conversation
-    F1->>WS: Connect WebSocket (conversation_id)
+    F1->>WS: Connect WebSocket conversation_id
     WS->>DB: Verify Access
     WS->>WS: Add to Conversation Group
     WS-->>F1: Connection Established
@@ -931,14 +931,14 @@ sequenceDiagram
     
     WS->>WS: Broadcast to Group
     WS-->>F1: Message Confirmed
-    WS-->>F2: New Message (Real-time)
+    WS-->>F2: New Message Real-time
     F2->>R: Show Notification
     
     R->>F2: Type Reply
     F2->>WS: Send Message
     WS->>DB: Save Message
     WS-->>F2: Message Confirmed
-    WS-->>F1: New Message (Real-time)
+    WS-->>F1: New Message Real-time
     F1->>C: Show New Message
 ```
 
@@ -1753,29 +1753,29 @@ sequenceDiagram
     participant API as API Server
     participant DB as Database
     
-    C->>API: POST /auth/token/ (username, password)
+    C->>API: POST /auth/token/ username password
     API->>DB: Validate Credentials
     DB-->>API: User Found
     API->>API: Generate JWT Tokens
-    API-->>C: {access_token, refresh_token}
+    API-->>C: access_token refresh_token
     
-    C->>API: GET /users/me/ (Bearer token)
+    C->>API: GET /users/me/ Bearer token
     API->>API: Verify Token
     API->>DB: Get User Data
     DB-->>API: User Data
     API-->>C: User Information
     
-    Note over C,API: Token Expires (60 min)
+    Note over C,API: Token Expires 60 min
     
-    C->>API: GET /jobs/ (expired token)
+    C->>API: GET /jobs/ expired token
     API-->>C: 401 Unauthorized
     
-    C->>API: POST /auth/token/refresh/ (refresh_token)
+    C->>API: POST /auth/token/refresh/ refresh_token
     API->>API: Validate Refresh Token
     API->>API: Generate New Access Token
-    API-->>C: {access_token}
+    API-->>C: access_token
     
-    C->>API: GET /jobs/ (new token)
+    C->>API: GET /jobs/ new token
     API-->>C: Jobs List
 ```
 
