@@ -640,9 +640,9 @@ sequenceDiagram
     API-->>F: available true
     
     U->>F: Submit Registration
-    F->>API: POST /users/ (registration data)
+    F->>API: POST /users/ registration data
     API->>API: Validate Data
-    API->>DB: Create User (is_active=False)
+    API->>DB: Create User is_active False
     DB-->>API: User Created
     API->>S: Trigger Signals
     S->>DB: Create Profile (Candidate/Recruiter)
@@ -732,7 +732,7 @@ sequenceDiagram
     participant N as Notification Service
     
     R->>F: Create Job Posting
-    F->>API: POST /jobs/ (job data)
+    F->>API: POST /jobs/ job data
     API->>API: Validate Data
     API->>API: Check Subscription Quota
     API->>DB: Create Job
@@ -903,7 +903,7 @@ sequenceDiagram
     
     API->>N: Notify Candidate
     N->>DB: Create Notification
-    N->>C: Send Email/Push Notification
+    N->>C: Send Email Push Notification
     API-->>F: updated application
     F->>R: Show Updated Status
 ```
@@ -1000,7 +1000,7 @@ sequenceDiagram
     participant F as Frontend
     participant API as API Server
     participant DB as Database
-    participant S as Stripe/AfribaPay
+    participant S as Stripe AfribaPay
     participant W as Webhook Handler
     
     U->>F: Select Subscription Plan
@@ -1280,7 +1280,7 @@ graph LR
     
     I --> J{Has Permission?}
     J -->|No| K[403 Forbidden]
-    J -->|Yes| L[View/ViewSet]
+    J -->|Yes| L[View ViewSet]
     
     L --> M[Serializer]
     M --> N[Validation]
